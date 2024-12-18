@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Monitoramento de Temperatura</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            margin-top: 50px;
+        }
+        h1 {
+            font-size: 2rem;
+        }
+        p {
+            font-size: 1.5rem;
+            color: #333;
+        }
+    </style>
+</head>
+<body>
+    <h1>Monitoramento de Temperatura em Tempo Real</h1>
+    <p id="temperature">Carregando...</p>
+
+    <script>
+        const ws = new WebSocket(`ws://localhost:8080/`);
+        ws.onmessage = (event) => {
+            const data = JSON.parse(event.data);
+            document.getElementById('temperature').innerText = `Última temperatura: ${data.temperature} °C`;
+        };
+        ws.onerror = (error) => {
+            console.error("Erro no WebSocket:", error);
+        };
+    </script>
+</body>
+</html>
